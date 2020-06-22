@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+    <title> My Map </title>
+    <!--This where you put all your dependencies-->
+    <!DOCTYPE html>
+    <html lang="en" dir="ltr">
+    <head>
+      <meta charset="utf-8">
+        <title> My Map </title>
+        <!--This where you put all your dependencies-->
+        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+        <script src='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css' rel='stylesheet' />
+        <style>
+        /*this CSS section is where you style your page*/
+        /*this is how you comment in CSS*/
+    	     body { margin: 0; padding: 0; }
+    	     #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+           .marker {
+             background-image: url('mapbox-icon.png');
+             background-size: cover;
+             width: 50px;
+             height: 50px;
+             border-radius: 50%;
+             cursor: pointer;
+           }
+           .mapboxgl-popup {
+             max-width: 200px;
+           }
+
+           .mapboxgl-popup-content {
+             text-align: center;
+             font-family: 'Open Sans', sans-serif;
+           }
+          </style>
+      </head>
+      <body>
+        <div id='map'></div>
+        <!--The below script section is a javascript section in your html file-->
+          <script>
+          //This is where you put your Javascript for interaction
+            mapboxgl.accessToken = 'pk.eyJ1IjoiY3dpbG1vdHQiLCJhIjoiY2s2bWRjb2tiMG1xMjNqcDZkbGNjcjVraiJ9.2nNOYL23A1cfZSE4hdC9ew'; //Put your own mapbox token
+
+            var map = new mapboxgl.Map({
+              container: 'map', // container id specified in the HTML
+              style: 'mapbox://styles/cwilmott/ckbowmfzd3r761il84bnji13t' //change to your style
+            });
+
+            var geojson = {
+              type: 'FeatureCollection',
+                features: [{
+      type: 'Feature',
+      properties: {
+        time: '2020-06-19T09:47:13Z',
+        title: '10:47:13',
+        description: '19 Jun 2020 at 10:47:13'
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [
+          -2.219255366395865,
+          53.457215089777584,
+
+        ]
+      }
+    },
+    {
+      type: 'Feature',
+      properties: {
+        time: '2020-06-19T09:47:19Z',
+        title: 'home',
+        description: '19 Jun 2020 at 10:47:19'
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [
+          -2.219227672420135,
+          53.457351307993434
+        ]
+      }
+    }]
+            }
+
+            // add markers to map
+  geojson.features.forEach(function(marker) {
+
+    // create a HTML element for each feature
+    var el = document.createElement('div');
+    el.className = 'marker';
+
+    // make a marker for each feature and add to the map
+    new mapboxgl.Marker(el)
+      .setLngLat(marker.geometry.coordinates)
+      .setLngLat(marker.geometry.coordinates)
+  .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+    .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
+      .addTo(map);
+  });
+  // Initialize the geolocate control.
+  var geolocate = new mapboxgl.GeolocateControl({
+  positionOptions: {
+  enableHighAccuracy: true
+  },
+  trackUserLocation: true
+  });
+  // Add the control to the map.
+  map.addControl(geolocate);
+  map.on('load', function() {
+  geolocate.trigger();
+  });
+
+          </script>
+      </body>
+    </html>
